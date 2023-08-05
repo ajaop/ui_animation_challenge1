@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ui_animation_challenge1/Providers/card_providers.dart';
 
 import 'homepage.dart';
 
@@ -12,7 +14,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        initialRoute: '/', routes: {'/': (context) => HomePage()});
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CardProvider>(
+          create: (context) => CardProvider(),
+        )
+      ],
+      child: MaterialApp(
+          initialRoute: '/', routes: {'/': (context) => HomePage()}),
+    );
   }
 }

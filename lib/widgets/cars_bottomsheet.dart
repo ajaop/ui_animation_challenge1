@@ -1,19 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class CarsBottomSheet extends StatefulWidget {
-  const CarsBottomSheet({
-    Key? key,
-    required this.screenHeight,
-  }) : super(key: key);
-
-  final double screenHeight;
+  const CarsBottomSheet({Key? key}) : super(key: key);
 
   @override
   State<CarsBottomSheet> createState() => _CarsBottomSheetState();
 }
 
 class _CarsBottomSheetState extends State<CarsBottomSheet> {
-  @override
+  //List<Widget> cards = List.generate(20, (i) => const CustomCard()).toList();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +20,7 @@ class _CarsBottomSheetState extends State<CarsBottomSheet> {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
       ),
-      child: SizedBox(
+      child: const SizedBox(
         height: 1000.0,
       ),
     );
