@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ui_animation_challenge1/Providers/card_providers.dart';
+import 'package:ui_animation_challenge1/homepage2.dart';
 
 import 'homepage.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-          initialRoute: '/', routes: {'/': (context) => HomePage()}),
+          initialRoute: '/', routes: {'/': (context) => HomePage2()}),
     );
   }
 }
