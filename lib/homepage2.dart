@@ -12,7 +12,8 @@ class HomePage2 extends StatefulWidget {
 }
 
 class _HomePage2State extends State<HomePage2> {
-  List data = [1950, 1961, 1962, 1953, 1954];
+  final ScrollController scrollController = ScrollController();
+  List data = ['', '', '1950', '1961', '1962', '1953', '1954', '', ''];
   double x = 0;
   double y = 0;
   double z = 0;
@@ -22,12 +23,20 @@ class _HomePage2State extends State<HomePage2> {
   Duration animationDuration = Duration(milliseconds: 100);
   bool swipeRight = false;
   int s = 2;
+  double offsetValue = 0;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   scrollController.addListener(() {
+  //     // print(scrollController.offset); // <-- This is it.
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    int dataLength = data.length;
-    List<Widget> draggableCards = List<Widget>.generate(data.length, (i) {
-      if (i == (dataLength - 1)) {
+    List<Widget> draggableCards = List<Widget>.generate(5, (i) {
+      if (i == (5 - 1)) {
         return Align(
           alignment: Alignment.bottomCenter,
           child: AnimatedContainer(
@@ -55,7 +64,7 @@ class _HomePage2State extends State<HomePage2> {
             child: GestureDetector(
               onHorizontalDragUpdate: (details) {
                 double position = details.globalPosition.dx;
-                if (details.delta.dx > 0) {
+                if (details.delta.dx > 0 && s >= 3) {
                   // Swiping in right direction.
                   setState(() {
                     swipeRight = true;
@@ -99,7 +108,7 @@ class _HomePage2State extends State<HomePage2> {
                       z = -0.23;
                     });
                   }
-                } else if (details.delta.dx < 0) {
+                } else if (details.delta.dx < 0 && s <= (data.length - 4)) {
                   //swipe left direction
                   setState(() {
                     swipeRight = false;
@@ -141,7 +150,7 @@ class _HomePage2State extends State<HomePage2> {
                 }
               },
               onHorizontalDragEnd: (details) {
-                if (swipeRight == false) {
+                if (swipeRight == false && s <= (data.length - 4)) {
                   if (details.velocity == Velocity.zero) {
                     //swipe left direction
                     setState(() {
@@ -157,6 +166,7 @@ class _HomePage2State extends State<HomePage2> {
                       x = -500;
                       z = 0;
                       y = 0;
+                      s += 1;
                     });
                     Future.delayed(const Duration(milliseconds: 200), () {
                       setState(() {
@@ -171,25 +181,43 @@ class _HomePage2State extends State<HomePage2> {
                         });
                       });
                     });
+
+                    _animateToIndex(s);
                   }
-                } else if (swipeRight == true) {
+                } else if (swipeRight == true && s >= 3) {
                   //swipe right direction
                   setState(() {
                     x = 0;
                     y = 0;
                     z = 0;
                     opacityValue = 0;
+                    s -= 1;
                   });
+                  _animateToIndex(s);
                 }
               },
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30)),
                 ),
-                height: 500.0,
+                height: 620.0,
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Divider(
+                      color: Colors.grey[600],
+                      thickness: 4.1,
+                      indent: 190.0,
+                      endIndent: 190.0,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -214,7 +242,7 @@ class _HomePage2State extends State<HomePage2> {
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30)),
                   ),
-                  height: 500.0),
+                  height: 620.0),
             ),
           ),
         );
@@ -224,41 +252,101 @@ class _HomePage2State extends State<HomePage2> {
     return Scaffold(
       body: Stack(
         children: [
-          ListView.builder(
-            itemCount: data.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return SafeArea(
-                left: false,
-                right: false,
-                child: Container(
-                  padding: EdgeInsets.only(right: 26),
-                  transform: Matrix4.translationValues(-38, 0, 0),
-                  child: Text(
-                    data[index].toString(),
-                    style: data[s].toString == data[index].toString
-                        ? TextStyle(
-                            fontSize: 40.0,
-                            fontFamily: 'Oxygen',
-                          )
-                        : TextStyle(
-                            fontSize: 40.0,
-                            fontFamily: 'Oxygen',
-                            foreground: Paint()
-                              ..style = PaintingStyle.stroke
-                              ..strokeWidth = 0.5
-                              ..color = Colors.black,
+          SafeArea(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10.0,
+                ),
+                Stack(children: [
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 30.0),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                        size: 24.0,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text('Timeline',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black,
+                            fontSize: 21.0,
+                            fontWeight: FontWeight.bold)),
+                  )
+                ]),
+                SizedBox(
+                  height: 50,
+                ),
+                SizedBox(
+                  height: 150,
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    controller: scrollController,
+                    itemCount: data.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return SafeArea(
+                        left: false,
+                        right: false,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 30.0),
+                          child: Container(
+                            width: 76,
+                            transform: Matrix4.translationValues(-32, 0, 0),
+                            child: Text(
+                              data[index].toString(),
+                              style: data[s].toString == data[index].toString
+                                  ? TextStyle(
+                                      fontSize: 35.0,
+                                      fontFamily: 'Oxygen',
+                                    )
+                                  : TextStyle(
+                                      fontSize: 35.0,
+                                      fontFamily: 'Oxygen',
+                                      foreground: Paint()
+                                        ..style = PaintingStyle.stroke
+                                        ..strokeWidth = 0.5
+                                        ..color = Colors.black,
+                                    ),
+                            ),
                           ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              );
-            },
+              ],
+            ),
           ),
           Stack(
             children: draggableCards,
           ),
         ],
       ),
+    );
+  }
+
+  void _animateToIndex(int index) {
+    if (swipeRight == false) {
+      setState(() {
+        offsetValue += 107.0;
+      });
+    } else {
+      setState(() {
+        offsetValue -= 107.0;
+      });
+    }
+
+    scrollController.animateTo(
+      offsetValue,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.fastOutSlowIn,
     );
   }
 }
