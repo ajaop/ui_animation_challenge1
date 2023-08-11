@@ -13,7 +13,7 @@ class HomePage2 extends StatefulWidget {
 
 class _HomePage2State extends State<HomePage2> {
   final ScrollController scrollController = ScrollController();
-  List data = ['', '', '1950', '1961', '1962', '1953', '1954', '', ''];
+  List data = ['', '', '1960', '1961', '1962', '1963', '1964', '', ''];
   double x = 0;
   double y = 0;
   double z = 0;
@@ -197,26 +197,152 @@ class _HomePage2State extends State<HomePage2> {
                 }
               },
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: Color(0xff0D0D0D),
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30)),
                 ),
-                height: 620.0,
+                height: 650.0,
                 width: double.infinity,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Divider(
-                      color: Colors.grey[600],
-                      thickness: 4.1,
-                      indent: 190.0,
-                      endIndent: 190.0,
-                    )
-                  ],
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+                  child: Column(
+                    children: [
+                      Divider(
+                        color: Colors.grey[600],
+                        thickness: 4.0,
+                        indent: 150.0,
+                        endIndent: 150.0,
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('1961',
+                              style: TextStyle(
+                                color: Colors.grey[100],
+                                fontSize: 80.0,
+                                fontWeight: FontWeight.normal,
+                                letterSpacing: 1.0,
+                                fontFamily: 'Oxygen',
+                              )),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Text(' -1965',
+                                style: TextStyle(
+                                  fontSize: 35.0,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.0,
+                                  fontFamily: 'Oxygen',
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 0.5
+                                    ..color = Colors.grey,
+                                )),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.05),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Image.asset('images/car1.jpg')),
+                      ),
+                      SizedBox(
+                        height: 44.0,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: [
+                              Text('1',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: 'Oswald',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey[100])),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Colors.grey[100],
+                                radius: 1.8,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Column(
+                            children: [
+                              Text('2',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: 'Oswald',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey[100])),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Column(
+                            children: [
+                              Text('3',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: 'Oswald',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey[100])),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Column(
+                            children: [
+                              Text('4',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: 'Oswald',
+                                      color: Colors.grey[100])),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 22.0,
+                      ),
+                      Text('Chevrolet Corvette C3',
+                          style: TextStyle(
+                              fontSize: 52.0,
+                              fontFamily: 'Cormorant Garamond',
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey[100]))
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -242,7 +368,7 @@ class _HomePage2State extends State<HomePage2> {
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30)),
                   ),
-                  height: 620.0),
+                  height: 650.0),
             ),
           ),
         );
@@ -305,10 +431,11 @@ class _HomePage2State extends State<HomePage2> {
                                   ? TextStyle(
                                       fontSize: 35.0,
                                       fontFamily: 'Oxygen',
-                                    )
+                                      fontWeight: FontWeight.bold)
                                   : TextStyle(
                                       fontSize: 35.0,
                                       fontFamily: 'Oxygen',
+                                      fontWeight: FontWeight.bold,
                                       foreground: Paint()
                                         ..style = PaintingStyle.stroke
                                         ..strokeWidth = 0.5
@@ -345,7 +472,7 @@ class _HomePage2State extends State<HomePage2> {
 
     scrollController.animateTo(
       offsetValue,
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
     );
   }
