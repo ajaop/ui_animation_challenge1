@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:ui_animation_challenge1/Models/card_details.dart';
 
 class HomePage2 extends StatefulWidget {
   const HomePage2({Key? key}) : super(key: key);
@@ -13,6 +11,7 @@ class HomePage2 extends StatefulWidget {
 
 class _HomePage2State extends State<HomePage2> {
   final ScrollController scrollController = ScrollController();
+  bool isChanged = false;
   List data = ['', '', '1960', '1961', '1962', '1963', '1964', '', ''];
   double x = 0;
   double y = 0;
@@ -20,18 +19,47 @@ class _HomePage2State extends State<HomePage2> {
   double leftPadding = 7.0;
   double bottomPadding = 20.0;
   double opacityValue = 0.05;
-  Duration animationDuration = Duration(milliseconds: 100);
+  Duration animationDuration = const Duration(milliseconds: 100);
   bool swipeRight = false;
   int s = 2;
+  int s2 = 3;
   double offsetValue = 0;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   scrollController.addListener(() {
-  //     // print(scrollController.offset); // <-- This is it.
-  //   });
-  // }
+  final List<CardDetails> carList = [
+    CardDetails(startYear: '', endYear: '', carImage: '', carName: ''),
+    CardDetails(startYear: '', endYear: '', carImage: '', carName: ''),
+    CardDetails(
+        startYear: '1960',
+        endYear: '1982',
+        carImage: 'images/car1.jpg',
+        carName: 'Chevrolet Corvette C3'),
+    CardDetails(
+        startYear: '1961',
+        endYear: '1983',
+        carImage: 'images/car1.jpg',
+        carName: 'Chevrolet Corvette C3'),
+    CardDetails(
+        startYear: '1962',
+        endYear: '1984',
+        carImage: 'images/car1.jpg',
+        carName: 'Chevrolet Corvette C3'),
+    CardDetails(
+        startYear: '1963',
+        endYear: '1985',
+        carImage: 'images/car1.jpg',
+        carName: 'Chevrolet Corvette C3'),
+    CardDetails(
+        startYear: '1964',
+        endYear: '1986',
+        carImage: 'images/car1.jpg',
+        carName: 'Chevrolet Corvette C3'),
+    CardDetails(
+        startYear: '1965',
+        endYear: '1987',
+        carImage: 'images/car1.jpg',
+        carName: 'Chevrolet Corvette C3'),
+    CardDetails(startYear: '', endYear: '', carImage: '', carName: ''),
+    CardDetails(startYear: '', endYear: '', carImage: '', carName: '')
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +96,15 @@ class _HomePage2State extends State<HomePage2> {
                   // Swiping in right direction.
                   setState(() {
                     swipeRight = true;
+                    if (isChanged == false) {
+                      setState(() {
+                        //code goes here
+                        s2 -= 1;
+                        isChanged = true;
+                      });
+                    }
                   });
+
                   if (position > 300 && position < 341) {
                     setState(() {
                       x = 0;
@@ -168,17 +204,18 @@ class _HomePage2State extends State<HomePage2> {
                       y = 0;
                       s += 1;
                     });
-                    Future.delayed(const Duration(milliseconds: 200), () {
+
+                    Future.delayed(const Duration(milliseconds: 10), () {
                       setState(() {
-                        x = 0;
+                        animationDuration = Duration.zero;
                       });
                     }).whenComplete(() {
-                      Future.delayed(const Duration(milliseconds: 200), () {
-                        setState(() {
-                          leftPadding = 10.0;
-                          bottomPadding = 20.0;
-                          opacityValue = 0.05;
-                        });
+                      setState(() {
+                        x = 0;
+                        leftPadding = 10.0;
+                        bottomPadding = 20.0;
+                        opacityValue = 0.05;
+                        s2 += 1;
                       });
                     });
 
@@ -192,6 +229,8 @@ class _HomePage2State extends State<HomePage2> {
                     z = 0;
                     opacityValue = 0;
                     s -= 1;
+                    s2 -= 1;
+                    isChanged = false;
                   });
                   _animateToIndex(s);
                 }
@@ -222,7 +261,7 @@ class _HomePage2State extends State<HomePage2> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('1961',
+                          Text(carList[s].startYear,
                               style: TextStyle(
                                 color: Colors.grey[100],
                                 fontSize: 80.0,
@@ -235,7 +274,7 @@ class _HomePage2State extends State<HomePage2> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 15.0),
-                            child: Text(' -1965',
+                            child: Text(' -' + carList[s].endYear,
                                 style: TextStyle(
                                   fontSize: 35.0,
                                   fontWeight: FontWeight.bold,
@@ -243,7 +282,7 @@ class _HomePage2State extends State<HomePage2> {
                                   fontFamily: 'Oxygen',
                                   foreground: Paint()
                                     ..style = PaintingStyle.stroke
-                                    ..strokeWidth = 0.5
+                                    ..strokeWidth = 1.0
                                     ..color = Colors.grey,
                                 )),
                           ),
@@ -267,7 +306,7 @@ class _HomePage2State extends State<HomePage2> {
                         ),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(20.0),
-                            child: Image.asset('images/car1.jpg')),
+                            child: Image.asset(carList[s].carImage)),
                       ),
                       SizedBox(
                         height: 44.0,
@@ -335,7 +374,7 @@ class _HomePage2State extends State<HomePage2> {
                       SizedBox(
                         height: 22.0,
                       ),
-                      Text('Chevrolet Corvette C3',
+                      Text(carList[s].carName,
                           style: TextStyle(
                               fontSize: 52.0,
                               fontFamily: 'Cormorant Garamond',
@@ -355,7 +394,7 @@ class _HomePage2State extends State<HomePage2> {
             duration: animationDuration,
             opacity: (i == 0) ? opacityValue : 0.05,
             child: AnimatedPadding(
-              duration: const Duration(milliseconds: 100),
+              duration: animationDuration,
               padding: EdgeInsets.only(
                   left: (i == 0) ? (leftPadding * (i + 1)) : (7.0 * (i + 1)),
                   right: (i == 0) ? (leftPadding * (i + 1)) : (7.0 * (i + 1)),
@@ -368,7 +407,149 @@ class _HomePage2State extends State<HomePage2> {
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30)),
                   ),
-                  height: 650.0),
+                  height: 650.0,
+                  child: (i == 0 && s <= (data.length - 4))
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                              left: 40.0, right: 40.0, top: 10.0),
+                          child: Column(
+                            children: [
+                              Divider(
+                                color: Colors.grey[600],
+                                thickness: 4.0,
+                                indent: 150.0,
+                                endIndent: 150.0,
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(carList[s2].startYear,
+                                      style: TextStyle(
+                                        color: Colors.grey[100],
+                                        fontSize: 80.0,
+                                        fontWeight: FontWeight.normal,
+                                        letterSpacing: 1.0,
+                                        fontFamily: 'Oxygen',
+                                      )),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: Text(' -' + carList[s2].endYear,
+                                        style: TextStyle(
+                                          fontSize: 35.0,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.0,
+                                          fontFamily: 'Oxygen',
+                                          foreground: Paint()
+                                            ..style = PaintingStyle.stroke
+                                            ..strokeWidth = 1.0
+                                            ..color = Colors.grey,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.05),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Image.asset(carList[s2].carImage)),
+                              ),
+                              SizedBox(
+                                height: 44.0,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text('1',
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontFamily: 'Oswald',
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey[100])),
+                                      SizedBox(
+                                        height: 8.0,
+                                      ),
+                                      CircleAvatar(
+                                        backgroundColor: Colors.grey[100],
+                                        radius: 1.8,
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text('2',
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontFamily: 'Oswald',
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey[100])),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text('3',
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontFamily: 'Oswald',
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey[100])),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text('4',
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontFamily: 'Oswald',
+                                              color: Colors.grey[100])),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 22.0,
+                              ),
+                              Text(carList[s2].carName,
+                                  style: TextStyle(
+                                      fontSize: 52.0,
+                                      fontFamily: 'Cormorant Garamond',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey[100]))
+                            ],
+                          ),
+                        )
+                      : null),
             ),
           ),
         );
