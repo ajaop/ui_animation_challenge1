@@ -13,12 +13,20 @@ class CardProvider extends ChangeNotifier {
   int s2 = 3;
 
   bool swipeRight = false;
+  bool swipeUp = false;
   bool isChanged = false;
+
+  Color back_arrow = Colors.black;
 
   Duration animationDuration = const Duration(milliseconds: 100);
 
   void updateSwipeRight(bool swipe) {
     swipeRight = swipe;
+    notifyListeners();
+  }
+
+  void updateSwipeUp(bool swipe) {
+    swipeUp = swipe;
     notifyListeners();
   }
 
@@ -69,6 +77,11 @@ class CardProvider extends ChangeNotifier {
 
   void updateS2(int val) {
     s2 = val;
+    notifyListeners();
+  }
+
+  void updateBackArrowColor(Color arrowColor) {
+    back_arrow = arrowColor;
     notifyListeners();
   }
 

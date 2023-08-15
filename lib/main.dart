@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:ui_animation_challenge1/Providers/card_providers.dart';
 import 'package:ui_animation_challenge1/homepage2.dart';
 
-import 'homepage.dart';
-
 void main() {
   runApp(const MyApp());
 }

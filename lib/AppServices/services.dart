@@ -129,13 +129,14 @@ class Services {
     }
   }
 
-  void dragUp() {
+  void dragUp(AnimationController _controller) {
     CardProvider updateCardProvider =
         Provider.of<CardProvider>(context, listen: false);
 
     if (updateCardProvider.isChanged == false) {
       updateCardProvider.updateSwipeUp(true);
       updateCardProvider.updateIsChanged(true);
+      _playAmination(_controller);
     }
   }
 
@@ -145,12 +146,13 @@ class Services {
     updateCardProvider.updateIsChanged(false);
   }
 
-  void dragDown() {
+  void dragDown(AnimationController _controller) {
     CardProvider updateCardProvider =
         Provider.of<CardProvider>(context, listen: false);
     if (updateCardProvider.isChanged == false) {
       updateCardProvider.updateSwipeUp(false);
       updateCardProvider.updateIsChanged(true);
+      _reverseAmination(_controller);
     }
   }
 
@@ -176,5 +178,25 @@ class Services {
       duration: const Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
     );
+  }
+
+  void checkHeightValue() {}
+
+  Future<void> _playAmination(AnimationController _controller) async {
+    try {
+      await _controller.forward().orCancel;
+      //await _controller.reverse().orCancel;
+    } on TickerCanceled {
+      // the animation got canceled, probably because it was disposed of
+    }
+  }
+
+  Future<void> _reverseAmination(AnimationController _controller) async {
+    try {
+      await _controller.reverse().orCancel;
+      //await _controller.reverse().orCancel;
+    } on TickerCanceled {
+      // the animation got canceled, probably because it was disposed of
+    }
   }
 }
